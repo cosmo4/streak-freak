@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: nextjs-app
+    runtime: node
+    plan: free # You can adjust this to a different plan if needed
+    buildCommand: 'next build'
+    startCommand: 'next start -p 10000'
+    envVars:
+      - key: PORT
+        value: 10000
