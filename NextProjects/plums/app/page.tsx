@@ -1,6 +1,18 @@
 import { PlusIcon, SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
+import prisma from '../lib/prisma';
 
-export default function Home() {
+
+
+export default async function Home() {
+
+  const feed = await prisma.post.findMany({
+    where: { published: true },
+    include: {
+      author: {
+        select: { name: true },
+      },
+    },
+  });
   return (
     <div className="min-h-screen bg-blue-50 p-8">
       {/* Header */}
@@ -39,6 +51,14 @@ export default function Home() {
               <h2 className="text-red-800 text-2xl font-bold">Streak Title</h2>
               <p className="text-red-600">Streak Type: Count</p>
               <p className="text-red-600">Total: 10</p>
+            </div>
+          ))}
+
+          {feed.map((post) => (
+            <div key={post.id} className="bg-red-100 rounded-xl p-6 h-40 text-center shadow-md hover:bg-red-200">
+              <h2 className="text-red-800 text-2xl font-bold">{post.title}</h2>
+              <p className="text-red-600">Author: {post.author?.name || "Unknown"}</p>
+              <p className="text-red-600">Published: {post.published ? "Yes" : "No"}</p>
             </div>
           ))}
         </div>
