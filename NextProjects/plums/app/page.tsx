@@ -1,4 +1,5 @@
 import { PlusIcon, SearchIcon, UserCircleIcon } from '@heroicons/react/outline';
+import Link from 'next/link';
 import prisma from '../lib/prisma';
 
 
@@ -33,16 +34,21 @@ export default async function Home() {
       {/* Main Content */}
       <main className="mt-8 w-3/4 mx-auto">
         <div className="flex justify-end mb-8">
-          <button className="bg-red-200 p-3 rounded-full shadow-md hover:bg-red-300">
-            <PlusIcon className="w-6 h-6 text-white" />
-          </button>
+          <Link href="/add">
+            <button className="bg-red-200 p-3 rounded-full shadow-md hover:bg-red-300">
+              <PlusIcon className="w-6 h-6 text-white" />
+            </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Add New Streak Card */}
-          <div className="flex items-center justify-center bg-blue-100 rounded-xl h-40 shadow-md hover:bg-blue-200">
-            <PlusIcon className="w-12 h-12 text-blue-600" />
-          </div>
+          <Link href="/add">
+            <div className="flex items-center justify-center bg-blue-100 rounded-xl h-40 shadow-md hover:bg-blue-200">
+              <PlusIcon className="w-12 h-12 text-blue-600" />
+            </div>
+          </Link>
+          
 
           {/* Existing Streak Cards */}
           {[...Array(6)].map((_, index) => (
