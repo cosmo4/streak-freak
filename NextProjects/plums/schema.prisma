@@ -10,7 +10,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Post {
+model Streak {
   id        String  @id @default(cuid())
   title     String
   content   String?
@@ -18,6 +18,23 @@ model Post {
   author    User?   @relation(fields: [authorId], references: [id])
   authorId  String?
 }
+
+model Streak {
+  id             Int         @id @default(autoincrement())
+  name           String      // e.g., "Daily Run" or "Hydration"
+  description    String?     // Optional description
+  streakType     StreakType  // Enum for streak type (Count, Duration, etc.)
+  userId         Int
+  user           User        @relation(fields: [userId], references: [id])
+  createdAt      DateTime    @default(now())
+  entries        Entry[]     // Logs of individual streak entries
+  reminders      Reminder[]  // Reminders for logging entries
+
+  totalCount     Int?        // Used for Count type
+  totalDuration  Int?        // Used for Duration type
+  totalQuantity  Float?      // Used for Quantity type
+}
+
 
 model Account {
   id                 String  @id @default(cuid())
