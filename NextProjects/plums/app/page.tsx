@@ -6,10 +6,9 @@ import prisma from '../lib/prisma';
 
 export default async function Home() {
 
-  const feed = await prisma.post.findMany({
-    where: { published: true },
+  const feed = await prisma.streak.findMany({
     include: {
-      author: {
+      user: {
         select: { name: true },
       },
     },
@@ -17,17 +16,17 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-blue-50 p-8">
       {/* Header */}
-      <header className="relative bg-red-100 p-6 rounded-xl shadow-lg">
+      <header className="relative bg-purple-100 p-6 rounded-xl shadow-lg">
         <div className="flex flex-col justify-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-red-800 text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold text-purple-800 text-center">
             Streak Freak
           </h1>
-            <h2 className='text-xl sm:text-2xl font-bold text-red-800 text-center'>Habit Tracking</h2>
+            <h2 className='text-xl sm:text-2xl font-bold text-purple-800 text-center'>Habit Tracking</h2>
         </div>
 
         <div className="absolute right-6 top-4 sm:top-10 flex flex-col-reverse sm:flex-row items-center sm:space-y-0 sm:space-x-4">
-          <SearchIcon className="w-8 h-8 text-red-600" />
-          <UserCircleIcon className="w-10 h-10 text-red-600 mb-3" />
+          <SearchIcon className="w-8 h-8 text-purple-600" />
+          <UserCircleIcon className="w-10 h-10 text-purple-600 mb-3" />
         </div>
       </header>
 
@@ -35,7 +34,7 @@ export default async function Home() {
       <main className="mt-8 w-3/4 mx-auto">
         <div className="flex justify-end mb-8">
           <Link href="/add">
-            <button className="bg-red-200 p-3 rounded-full shadow-md hover:bg-red-300">
+            <button className="bg-purple-200 p-3 rounded-full shadow-md hover:bg-purple-300">
               <PlusIcon className="w-6 h-6 text-white" />
             </button>
           </Link>
@@ -51,19 +50,14 @@ export default async function Home() {
           
 
           {/* Existing Streak Cards */}
-          {[...Array(6)].map((_, index) => (
-            <div key={index} className="bg-red-100 rounded-xl p-6 h-40 text-center shadow-md hover:bg-red-200">
-              <h2 className="text-red-800 text-2xl font-bold">Streak Title</h2>
-              <p className="text-red-600">Streak Type: Count</p>
-              <p className="text-red-600">Total: 10</p>
-            </div>
-          ))}
+          
 
-          {feed.map((post) => (
-            <div key={post.id} className="bg-red-100 rounded-xl p-6 h-40 text-center shadow-md hover:bg-red-200">
-              <h2 className="text-red-800 text-2xl font-bold">{post.title}</h2>
-              <p className="text-red-600">Author: {post.author?.name || "Unknown"}</p>
-              <p className="text-red-600">Published: {post.published ? "Yes" : "No"}</p>
+          {feed.map((streak) => (
+            <div key={streak.id} className="bg-purple-100 rounded-xl p-6 h-40 text-center shadow-md hover:bg-purple-200">
+              <h2 className="text-purple-800 text-2xl font-bold">{streak.name}</h2>
+              <p className="text-purple-600">Streak Type: {streak.streakType}</p>
+              <p className="text-purple-600">User: {streak.user?.name || "Unknown"}</p>
+              <p className="text-purple-600">Total: {streak.totalCount}</p>
             </div>
           ))}
         </div>
