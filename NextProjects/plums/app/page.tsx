@@ -2,8 +2,6 @@ import { PlusIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import prisma from '../lib/prisma';
 
-
-
 export default async function Home() {
 
   const feed = await prisma.streak.findMany({
@@ -37,12 +35,12 @@ export default async function Home() {
           
 
           {feed.map((streak) => (
-            <div key={streak.id} className="bg-purple-200 rounded-xl p-6 h-40 text-center shadow-md hover:bg-purple-300">
+            <Link key={streak.id} href={`/streaks/${streak.id}`} className="bg-purple-200 rounded-xl p-6 h-40 text-center shadow-md hover:bg-purple-300">
               <h2 className="text-purple-800 text-2xl font-bold">{streak.name}</h2>
               <p className="text-purple-600">Streak Type: {streak.streakType}</p>
               <p className="text-purple-600">User: {streak.user?.name || "Unknown"}</p>
               <p className="text-purple-600">Total: {streak.totalCount}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
