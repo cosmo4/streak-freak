@@ -1,4 +1,5 @@
 
+
 export default function About() {
     return (
         <div className="container">
@@ -22,9 +23,10 @@ export default function About() {
                 <br></br>
                 <button type="submit" className="btn">Login</button>
 
-                <br></br><br></br>
-                <button type="submit" className="btn">Don&apos;t have a login, Click Here!</button>
             </form>
+            <br></br>
+            <a href="/register.tsx">Don&apos;t have a login, Click Here!</a>
+            
         </div>
     )
 }
