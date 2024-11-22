@@ -21,6 +21,9 @@ export default function About() {
                 </div>
                 <br></br>
                 <button type="submit" className="btn">Login</button>
+
+                <br></br><br></br>
+                <button type="submit" className="btn">Don&apos;t have a login, Click Here!</button>
             </form>
         </div>
     )
