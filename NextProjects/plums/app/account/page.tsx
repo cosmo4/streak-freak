@@ -25,7 +25,7 @@ export default function About() {
 
             </form>
             <br></br>
-            <a href="/register.tsx">Don&apos;t have a login, Click Here!</a>
+            <a href="/register">Don&apos;t have a login, Click Here!</a>
             
         </div>
     )
