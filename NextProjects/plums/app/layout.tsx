@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from '../app/components/Header';
 
+// app/layout.jsx
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,6 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <UserProvider>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased p-8 bg-blue-50 min-h-screen`}
       >
@@ -40,6 +43,7 @@ export default function RootLayout({
           {children}
         </main>
       </body>
+    </UserProvider>
     </html>
   );
 }

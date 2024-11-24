@@ -16,7 +16,7 @@ const Header = () => {
 
             <div className="absolute right-6 top-4 sm:top-10 flex flex-col-reverse sm:flex-row items-center sm:space-y-0 sm:space-x-4">
                 <SearchIcon className="w-8 h-8 text-purple-800" />
-                <Link href="/account" >
+                <Link href="/api/auth/login">
                     <UserCircleIcon className="w-10 h-10 text-purple-800 " />
                 </Link>
                 <Link href="/">
