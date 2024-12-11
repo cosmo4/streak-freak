@@ -2,6 +2,7 @@
 
 import { Streak } from '@prisma/client';
 import { useState, useEffect } from 'react';
+import Confetti from '@/app/components/Confetti';
 
 export default function ManageStreak({ params }: { params: { id: string } }) {
   const [streak, setStreak] = useState<Streak | null>(null);
@@ -31,6 +32,7 @@ function StreakEditor({ streak }: { streak: Streak }) {
   const [type, setType] = useState(streak.streakType);
   const [totalCount, setTotalCount] = useState(streak.totalCount || 0);
   const [entryValue, setEntryValue] = useState<string | number | boolean>('');
+  const [isConfettiActive, setConfettiActive] = useState(false);
 
   const handleSave = async () => {
     try {
@@ -51,16 +53,19 @@ function StreakEditor({ streak }: { streak: Streak }) {
     }
   };
 
-  const handleAddEntry = async () => {
+  const handleAddEntry = async (value: boolean | number | string) => {
     try {
       const response = await fetch(`/api/streaks/${streak.id}/entries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ entryValue, streakType: type }),
+        body: JSON.stringify({ entryValue: value, streakType: type }),
       });
 
       if (response.ok) {
-        alert('Entry added successfully!');
+        setConfettiActive(true);
+        setTimeout(() => {
+          setConfettiActive(false);
+        }, 4000);
         setEntryValue('');
       } else {
         alert('Failed to add entry.');
@@ -73,6 +78,7 @@ function StreakEditor({ streak }: { streak: Streak }) {
 
   return (
     <div>
+      <Confetti isActive={isConfettiActive} />
       <div className="bg-purple-200 w-2/5 mx-auto p-5 my-14 rounded-md text-purple-800 flex flex-col items-center">
         <h3 className="text-2xl mb-8">Add Today&apos;s Entry</h3>
         <p className='my-3'>{name}</p>
@@ -97,8 +103,8 @@ function StreakEditor({ streak }: { streak: Streak }) {
           )}
           {type === 'CLICK' && (
             <button
-              onClick={() => setEntryValue(true)} // Click streaks only need a true/false
-              className="bg-purple-500 text-white px-4 py-2 rounded mt-4 hover:bg-purple-600"
+              onClick={() => handleAddEntry(true)} // Click streaks only need a true/false
+              className="bg-purple-500 text-white px-4 py-2 rounded mt-4 hover:bg-purple-600 mx-auto w-full"
             >
               Mark as Completed
             </button>
@@ -114,7 +120,7 @@ function StreakEditor({ streak }: { streak: Streak }) {
           )}
           {type !== 'CLICK' && (
             <button
-              onClick={handleAddEntry}
+              onClick={() => handleAddEntry(entryValue)}
               className="bg-purple-500 text-white px-4 py-2 rounded mt-4 hover:bg-purple-600"
             >
               Add Entry
