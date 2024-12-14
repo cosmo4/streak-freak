@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import { SearchIcon, UserCircleIcon, HomeIcon } from '@heroicons/react/outline';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
+function loggedin() {
+  // The 'withPageAuthRequired' function is used for server-side authentication
+  return withPageAuthRequired();
+}
 
 const Header = () => {
     return (
@@ -16,9 +21,17 @@ const Header = () => {
 
             <div className="absolute right-6 top-4 sm:top-10 flex flex-col-reverse sm:flex-row items-center sm:space-y-0 sm:space-x-4">
                 <SearchIcon className="w-8 h-8 text-purple-800" />
-                <Link href="/api/auth/login">
-                    <UserCircleIcon className="w-10 h-10 text-purple-800 " />
-                </Link>
+                {/* Conditional rendering using ternary operator */}
+                {loggedin() ? (
+                    <Link href="/api/auth/logout">
+                        <UserCircleIcon className="w-10 h-10 text-purple-800 " />
+                    </Link>
+                    
+                ) : (
+                    <Link href="/api/auth/login">
+                        <UserCircleIcon className="w-10 h-10 text-purple-800 " />
+                    </Link>
+                )}
                 <Link href="/">
                     <HomeIcon className="w-9 h-9 text-purple-800" />
                 </Link>
