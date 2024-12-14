@@ -1,13 +1,12 @@
+'use client'
+
 import Link from 'next/link';
 import { SearchIcon, UserCircleIcon, HomeIcon } from '@heroicons/react/outline';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-
-function loggedin() {
-  // The 'withPageAuthRequired' function is used for server-side authentication
-  return withPageAuthRequired();
-}
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const Header = () => {
+    const { user, isLoading } = useUser();
+
     return (
         <header className="relative bg-purple-200 p-6 rounded-xl shadow-lg">
             <Link href="/">
@@ -22,7 +21,7 @@ const Header = () => {
             <div className="absolute right-6 top-4 sm:top-10 flex flex-col-reverse sm:flex-row items-center sm:space-y-0 sm:space-x-4">
                 <SearchIcon className="w-8 h-8 text-purple-800" />
                 {/* Conditional rendering using ternary operator */}
-                {loggedin() ? (
+                {!isLoading && user ? (
                     <Link href="/api/auth/logout">
                         <UserCircleIcon className="w-10 h-10 text-purple-800 " />
                     </Link>

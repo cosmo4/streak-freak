@@ -1,10 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { PlusIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import prisma from '../lib/prisma';
+import { getSession } from '@auth0/nextjs-auth0';
 
 export default async function Home() {
+  // Fetch the session
+  const session = await getSession();
 
+  if (!session || !session.user) {
+    // Redirect to login if the user is not authenticated
+    return (
+      <div className="text-center mt-8">
+        <p>You are not logged in. Please <Link href="/api/auth/login">log in</Link>.</p>
+      </div>
+    );
+  }
+
+  // Fetch streaks for the logged-in user
   const feed = await prisma.streak.findMany({
+    where: {
+      user: {
+        email: session.user.email,
+      },
+    },
     include: {
       user: {
         select: { name: true },
