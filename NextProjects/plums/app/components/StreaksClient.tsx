@@ -31,7 +31,7 @@ export default function StreaksClient() {
   }, [isLoading, user]);
 
   if (isLoading) return <div>Loading...</div>;
-  if (!user) return <div>Please log in to view your streaks.</div>;
+  if (!user) return <div className='text-3xl w-1/2 mx-auto text-center my-20'>Please log in to view your streaks.</div>;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-14">
