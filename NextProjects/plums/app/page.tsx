@@ -1,36 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+'use client'
 import { PlusIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
-import prisma from '../lib/prisma';
-import { getSession } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
+import { useEffect } from 'react';
 
-export default async function Home() {
+export default function Home() {
   // Fetch the session
-  const session = await getSession();
+  const { user, error, isLoading } = useUser();
+  
 
-  if (!session || !session.user) {
-    // Redirect to login if the user is not authenticated
-    return (
-      <div className="text-center mt-8">
-        <p>You are not logged in. Please <Link href="/api/auth/login">log in</Link>.</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (user) {
+      fetch('/api/auth/update-user', {
+        method: 'POST',
+      }).catch((err) => console.error('Failed to update user:', err));
+    }
+  }, [user]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
+  // if (!session || !session.user) {
+  //   // Redirect to login if the user is not authenticated
+  //   return (
+  //     <div className="text-center mt-8">
+  //       <p>You are not logged in. Please <Link href="/api/auth/login">log in</Link>.</p>
+  //     </div>
+  //   );
+  // }
 
   // Fetch streaks for the logged-in user
-  const feed = await prisma.streak.findMany({
-    where: {
-      user: {
-        email: session.user.email,
-      },
-    },
-    include: {
-      user: {
-        select: { name: true },
-      },
-    },
-  });
+  // const feed = await prisma.streak.findMany({
+  //   where: {
+  //     user: {
+  //       email: session.user.email,
+  //     },
+  //   },
+  //   include: {
+  //     user: {
+  //       select: { name: true },
+  //     },
+  //   },
+  // });
   return (
     
       <div className="mt-8 w-3/4 mx-auto">
@@ -52,16 +63,27 @@ export default async function Home() {
           
 
           {/* Existing Streak Cards */}
-          
+          <div className='text-purple-500'>
+            <h1>Welcome to the App</h1>
+            {user ? (
+              <>
+                <p>Logged in as {user.name}</p>
+                <a href="/api/auth/logout">Logout</a>
+              </>
+            ) : (
+              <a href="/api/auth/login">Login</a>
+            )}
+          </div>
+        );
 
-          {feed.map((streak) => (
+          {/* {feed.map((streak) => (
             <Link key={streak.id} href={`/streaks/${streak.id}`} className="bg-purple-200 rounded-xl p-6 h-40 text-center shadow-md hover:bg-purple-300">
               <h2 className="text-purple-800 text-2xl font-bold">{streak.name}</h2>
               <p className="text-purple-600">Streak Type: {streak.streakType}</p>
               <p className="text-purple-600">User: {streak.user?.name || "Unknown"}</p>
               <p className="text-purple-600">Total: {streak.totalCount}</p>
             </Link>
-          ))}
+          ))} */}
         </div>
       </div>
   );
