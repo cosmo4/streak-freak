@@ -5,9 +5,21 @@ import { PlusIcon } from '@heroicons/react/outline';
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from 'next/link';
 
+interface User {
+  name: string;
+}
+
+interface Streak {
+  id: string;
+  name: string;
+  streakType: string;
+  user?: User;
+  totalCount: number;
+}
+
 export default function StreaksClient() {
   const { user, isLoading } = useUser();
-  const [feed, setFeed] = useState([]);
+  const [feed, setFeed] = useState<Streak[]>([]);
 
   useEffect(() => {
     if (!isLoading && user) {

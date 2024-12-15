@@ -15,7 +15,7 @@ export default function StreakForm() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | HTMLSelectElement) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
@@ -48,7 +48,8 @@ export default function StreakForm() {
       setSuccess(true);
       setFormData({ streakTitle: '', streakType: 'COUNT', goalDescription: '' });
     } catch (err) {
-      setError(err.message);
+      console.error('Error caught:', err);
+      setError('An error occurred. Please try again later.');
     }
   };
 

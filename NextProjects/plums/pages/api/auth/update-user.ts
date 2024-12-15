@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
- 
 import { getSession } from '@auth0/nextjs-auth0';
 import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
